@@ -186,6 +186,7 @@ fi
 
 # Read infos from web
 HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
+HASSIO_VERSION=247
 info "Hass.io version is $HASSIO_VERSION"
 info "Hass.io docker image $HASSIO_DOCKER:$HASSIO_VERSION"
 
