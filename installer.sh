@@ -19,7 +19,7 @@ sleep 10
 
 ARCH=$(uname -m)
 
-info ${ARCH}
+info "Arch is $ARCH"
 
 IP_ADDRESS=$(hostname -I | awk '{ print $1 }')
 
@@ -166,12 +166,18 @@ case $ARCH in
         fi
         HASSIO_DOCKER="$DOCKER_REPO/aarch64-hassio-supervisor"
     ;;
+    "amd64")
+        if [ -z $MACHINE ]; then
+            error "Please set machine for $ARCH"
+        fi
+        HASSIO_DOCKER="$DOCKER_REPO/amd64-hassio-supervisor"
+    ;;
     *)
         error "$ARCH unknown!"
     ;;
 esac
 
-info ${HASSIO_DOCKER}
+info "Hass.io docker image $HASSIO_DOCKER"
 
 if [[ ! "${MACHINE}" =~ ^(intel-nuc|odroid-c2|odroid-n2|odroid-xu|qemuarm|qemuarm-64|qemux86|qemux86-64|raspberrypi|raspberrypi2|raspberrypi3|raspberrypi4|raspberrypi3-64|raspberrypi4-64|tinker)$ ]]; then
     error "Unknown machine type ${MACHINE}!"
@@ -186,7 +192,7 @@ fi
 
 # Read infos from web
 HASSIO_VERSION=$(curl -s $URL_VERSION | jq -e -r '.supervisor')
-info ${HASSIO_VERSION}
+info "Hass.io version is $HASSIO_VERSION"
 
 ##
 # Write configuration
